@@ -4,28 +4,28 @@
       <div class="row">
 
         <div class="col-md-6 offset-md-3 col-xs-12">
-          <h1 class="text-xs-center">Sign up</h1>
+          <h1 class="text-xs-center">Sign in</h1>
           <p class="text-xs-center">
-            <a href="">Have an account?</a>
+            <a route-href="route: register">Need an account?</a>
           </p>
 
-          <ul class="error-messages">
+          <!-- TODO Custom element for error list -->
+          <ul class="error-messages" if.bind="errors">
             <li>That email is already taken</li>
           </ul>
 
-          <form>
-            <fieldset class="form-group">
-              <input class="form-control form-control-lg" type="text" placeholder="Your Name">
+          <form role="form" submit.delegate="submitForm()">
+            <fieldset disabled.bind="isSubmitting">
+              <fieldset class="form-group">
+                <input class="form-control form-control-lg" type="text" placeholder="Email" value.bind="formData.email">
+              </fieldset>
+              <fieldset class="form-group">
+                <input class="form-control form-control-lg" type="password" placeholder="Password" value.bind="formData.password">
+              </fieldset>
+              <button class="btn btn-lg btn-primary pull-xs-right">
+                Sign in
+              </button>
             </fieldset>
-            <fieldset class="form-group">
-              <input class="form-control form-control-lg" type="text" placeholder="Email">
-            </fieldset>
-            <fieldset class="form-group">
-              <input class="form-control form-control-lg" type="password" placeholder="Password">
-            </fieldset>
-            <button class="btn btn-lg btn-primary pull-xs-right">
-              Sign up
-            </button>
           </form>
         </div>
 

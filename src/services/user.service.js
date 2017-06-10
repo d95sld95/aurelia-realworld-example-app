@@ -1,38 +1,63 @@
 import jwt from './jwt.service';
 import constants from '../config/app.constants';
-import { HttpClient } from 'aurelia-fetch-client';
+import { HttpClient, json } from 'aurelia-fetch-client';
 
 import {inject} from 'aurelia-framework';
 
 @inject(jwt, constants, HttpClient)
 export default class User {
 
-  constructor(JWT, AppConstants, $http, $state, $q) {
-    this._JWT = JWT;
-    this._AppConstants = AppConstants;
-    this._$http = $http;
-    this._$state = $state;
-    this._$q = $q;
+  constructor(JWT, AppConstants, httpClient, $state) {
+    this.JWT = JWT;
+    this.AppConstants = AppConstants;
+    this.httpClient = httpClient;
 
     this.current = null;
+
+    // TODO move to central place
+    this.httpClient.configure(config => {
+      config
+        .withBaseUrl(this.AppConstants.api)
+        .withDefaults({
+          credentials: 'same-origin',
+          headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'Fetch'
+          }
+        })
+        .withInterceptor({
+          request(request) {
+            console.log(`Requesting ${request.method} ${request.url}`);
+            return request; // you can return a modified Request, or you can short-circuit the request by returning a Response
+          },
+          response(response) {
+            console.log(`Received ${response.status} ${response.url}`);
+
+            if (response.status > 299) {
+              let error = new Error("HTTPClient Error");
+              error.response = response;
+              throw error;
+            } else {
+              return response; // you can return a modified Response
+            }
+          }
+        });
+    });
   }
 
   attemptAuth(type, credentials) {
     let route = (type === 'login') ? '/login' : '';
-    return this._$http({
-      url: this._AppConstants.api + '/users' + route,
+    return this.httpClient.fetch(`users${route}`, {
       method: 'POST',
-      data: {
+      body: json({
         user: credentials
-      }
-    }).then(
-      (res) => {
-        this._JWT.save(res.data.user.token);
-        this.current = res.data.user;
-
-        return res;
-      }
-    );
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      this.JWT.save(data.user.token);
+      this.current = data.user;
+    });
   }
 
   update(fields) {

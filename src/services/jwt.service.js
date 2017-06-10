@@ -5,21 +5,20 @@ import {inject} from 'aurelia-framework';
 @inject(constants)
 export default class JWT {
 
-  constructor(AppConstants, $window) {
-    this._AppConstants = AppConstants;
-    this._$window = $window;
+  constructor(AppConstants) {
+    this.AppConstants = AppConstants;
   }
 
   save(token) {
-    this._$window.localStorage[this._AppConstants.jwtKey] = token;
+    localStorage[this.AppConstants.jwtKey] = token;
   }
 
   get() {
-    return this._$window.localStorage[this._AppConstants.jwtKey];
+    return localStorage[this.AppConstants.jwtKey];
   }
 
   destroy() {
-    this._$window.localStorage.removeItem(this._AppConstants.jwtKey);
+    localStorage.removeItem(this.AppConstants.jwtKey);
   }
 
 }

@@ -12,25 +12,19 @@
           class="nav navbar-nav pull-xs-right">
 
         <li class="nav-item">
-          <a class="nav-link"
-             ui-sref-active="active"
-             ui-sref="app.home">
+          <a class="nav-link" route-href="route: home">
             Home
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link"
-             ui-sref-active="active"
-             ui-sref="app.login">
+          <a class="nav-link" route-href="route: login">
             Sign in
           </a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link"
-             ui-sref-active="active"
-             ui-sref="app.register">
+          <a class="nav-link" route-href="route: register">
             Sign up
           </a>
         </li>
@@ -69,8 +63,8 @@
           <a class="nav-link"
              ui-sref-active="active"
              ui-sref="app.profile.main({ username: $ctrl.currentUser.username})">
-            <img ng-src="{{$ctrl.currentUser.image}}" class="user-pic" />
-            {{ $ctrl.currentUser.username }}
+            <img src="${currentUser.image}" class="user-pic" />
+            ${currentUser.username}
           </a>
         </li>
 

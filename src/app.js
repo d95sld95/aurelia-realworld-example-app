@@ -5,7 +5,10 @@ export class App {
     config.map([
       { route: '', moduleId: 'home/home', name: 'home',  title: 'Home'},
       { route: 'editor/:slug', moduleId: 'editor/editor', name: 'editor', title: 'Editor', settings: { authenticated: true } },
-      { route: 'auth', moduleId: 'auth/index', name: 'auth'}
+
+      { route: 'register', moduleId: 'auth/register', name: 'register', title: 'Sign up'},
+      { route: 'login', moduleId: 'auth/login', name: 'login',  title: 'Sign in'}
+
     ]);
 
     this.router = router;
